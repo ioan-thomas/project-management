@@ -9,36 +9,39 @@ import Create from './pages/create/Create'
 
 // styles
 import './App.css'
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="container">
-        <Switch>
+    <div className='App'>
+      <BrowserRouter>
+        <div className="container">
+          <Navbar/>
+          <Switch>
+            <Route exact path="/">
+              <Dashboard />
+            </Route>  
 
-          <Route exact path="/">
-            <Dashboard />
-          </Route>  
+            <Route path="/login">
+              <Login />
+            </Route>  
 
-          <Route path="/login">
-            <Login />
-          </Route>  
+            <Route path="/projects/:id">
+              <Project />
+            </Route>  
 
-          <Route path="/projects/:id">
-            <Project />
-          </Route>  
+            <Route path="/signup">
+              <Signup />
+            </Route>  
 
-          <Route path="/signup">
-            <Signup />
-          </Route>  
+            <Route path="/create">
+              <Create />
+            </Route>  
 
-          <Route path="/create">
-            <Create />
-          </Route>  
-
-        </Switch>
-      </div>
-    </BrowserRouter>
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </div>
   );
 }
 
