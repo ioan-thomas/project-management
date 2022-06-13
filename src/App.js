@@ -10,11 +10,13 @@ import Create from './pages/create/Create'
 // styles
 import './App.css'
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
     <div className='App'>
       <BrowserRouter>
+          <Sidebar/>
         <div className="container">
           <Navbar/>
           <Switch>
