@@ -4,6 +4,13 @@ import Select from 'react-select'
 // styles
 import './Create.css'
 
+const categories = [
+  {value: 'development', label: 'Development'},
+  {value: 'design', label: 'Design'},
+  {value: 'sales', label: 'Sales'},
+  {value: 'marketing', label: 'Marketing'}
+]
+
 export default function Create() {
   const [name, setName] = useState('')
   const [details, setDetails] = useState('')
