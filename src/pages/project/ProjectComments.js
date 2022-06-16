@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { timestamp } from "../../firebase/config"
 import {useAuthContext} from '../../hooks/useAuthContext'
+import { projectFirestore } from "../../firebase/config"
+
 
 // styles
 import './Project.css'
 
-export default function ProjectComments() {
-    const [newComment, setNewComment] = useState('')
+export default function ProjectComments(id) {
+    const [newComment, setNewComment] = useState('');
+
     const {user:{displayName, photoURL}} = useAuthContext()
 
 
@@ -20,7 +23,7 @@ export default function ProjectComments() {
             createdAt: timestamp.fromDate(new Date()),
             id: Math.random()
         }
-        console.log(commentToAdd)
+
     }
 
   return (
