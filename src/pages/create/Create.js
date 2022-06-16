@@ -3,9 +3,11 @@ import Select from 'react-select'
 import { timestamp } from '../../firebase/config';
 import {useCollection} from '../../hooks/useCollection'
 import {useAuthContext} from '../../hooks/useAuthContext'
+import { useFirestore } from '../../hooks/useFirestore';
 
 // styles
 import './Create.css'
+import { useHistory } from 'react-router-dom';
 
 const categories = [
   {value: 'development', label: 'Development'},
@@ -19,6 +21,8 @@ export default function Create() {
   const { documents } = useCollection('users');
   const [users, setUsers] = useState([]);
   const { user } = useAuthContext()
+  const { addDocument, response:{ error, isPending } } = useFirestore('projects')
+  const history = useHistory()
 
   // form field values
   const [name, setName] = useState('');
@@ -32,12 +36,10 @@ export default function Create() {
     const options = documents?.map(user => {
       return {value: user, label: user.displayName}
     })
-
     setUsers(options)
-
   }, [documents])
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setFormError(null);
 
@@ -74,7 +76,14 @@ export default function Create() {
       assignedUserList
     }
 
-    console.log(project);
+    await addDocument(project);
+    if(error){
+      setFormError(error);
+    }
+
+    if(!error){
+      history.push('/')
+    }
   }
 
   return (
@@ -128,7 +137,9 @@ export default function Create() {
             />
         </label>
 
-        <button className='btn'>Add Project</button>
+        {!isPending && <button className='btn'>Add Project</button>}
+        {isPending && <button className='btn' disabled>Loading...</button>}
+
         {formError && <p className='error'>{formError}</p>}
       </form>
     </div>
