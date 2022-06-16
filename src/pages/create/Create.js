@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select'
+import {useCollection} from '../../hooks/useCollection'
 
 // styles
 import './Create.css'
@@ -12,15 +13,42 @@ const categories = [
 ]
 
 export default function Create() {
-  const [name, setName] = useState('')
-  const [details, setDetails] = useState('')
-  const [dueDate, setDueDate] = useState('')
-  const [category, setCategory] = useState('')
+
+  const { documents } = useCollection('users');
+  const [users, setUsers] = useState([]);
+
+  // form field values
+  const [name, setName] = useState('');
+  const [details, setDetails] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [category, setCategory] = useState('');
   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [ formError, setFormError ] = useState(null);
+
+  useEffect(() => {
+    const options = documents?.map(user => {
+      return {value: user, label: user.displayName}
+    })
+
+    setUsers(options)
+
+  }, [documents])
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(name, details, dueDate, category.value);
+    setFormError(null);
+
+    if(!category){
+      setFormError('Please select a project category');
+      return 
+    }
+
+    if (assignedUsers.length < 1){
+      setFormError('Please assign assign at least one user to the project');
+      return
+    }
+
+    console.log(name, details, dueDate, category.value, assignedUsers);
   }
 
   return (
@@ -67,10 +95,15 @@ export default function Create() {
 
         <label>
           <span>Assign to:</span>
-          {/* Assignee select here */}
+            <Select 
+            options={users}
+            onChange={option => setAssignedUsers(option)}
+            isMulti
+            />
         </label>
 
         <button className='btn'>Add Project</button>
+        {formError && <p className='error'>{formError}</p>}
       </form>
     </div>
   )
