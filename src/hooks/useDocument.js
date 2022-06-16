@@ -10,9 +10,15 @@ export function useDocument(collection, id) {
     useEffect(() => {
         const ref = projectFirestore.collection(collection).doc(id)
 
-        const unsub = ref.onSnapshot(doc => {
-            setDocument({...doc.data(), id: doc.id})
-            setError(null)
+        const unsub = ref.onSnapshot(snapshot => {
+            if(snapshot.data()){
+                setDocument({...snapshot.data(), id: snapshot.id})
+                setError(null)  
+            } 
+            else {
+                setError('No such document exists...')
+            }
+
         }, err => {
             console.log(err.message);
             setError('failed to get document')
@@ -22,5 +28,5 @@ export function useDocument(collection, id) {
 
     }, [collection, id])
 
-    return [document, error]
+    return {document, error}
 }
