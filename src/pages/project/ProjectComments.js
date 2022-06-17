@@ -63,7 +63,8 @@ export default function ProjectComments({project:{id, comments}}) {
                 value={newComment}
                 ></textarea>
             </label>
-            <button className="btn">Add comment</button>
+            {!isPending && <button className="btn">Add comment</button>}
+            {isPending && <button className="btn">Add comment</button>}
         </form>
     </div>
   )
