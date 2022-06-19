@@ -25,26 +25,16 @@ function App() {
           <div className="container">
             <Navbar/>
             <Routes>
-              <Route exact path="/">
-                {user && <Dashboard />}
-                {!user && <Navigate to='/login'/>}
-              </Route>  
-              <Route path="/login">
-                {!user && <Login />}
-                {user && <Navigate to='/' />}
-              </Route>  
-              <Route path="/projects/:id">
-                {user && <Project />}
-                {!user && <Navigate to='/login'/>}
-              </Route>  
-              <Route path="/signup">
-                {user && <Navigate to='/'/>}
-                {!user && <Signup /> }
-              </Route>  
-              <Route path="/create">
-                {user && <Create /> }
-                {!user && <Navigate to='/login'/>}
-              </Route>  
+              <Route path="/" element={user ? <Dashboard /> : <Navigate to='/login'/>} />
+
+              <Route path="/create" element={user ? <Create /> : <Navigate to='/login'/>} />
+
+              <Route path="/projects/:id" element={user ? <Project /> : <Navigate to='/login'/>} />
+
+              <Route path="/login" element={user ? <Navigate to='/' /> : <Login /> }/>
+
+              <Route path="/signup" element={user ? <Navigate to='/'/> : <Signup />} />
+
             </Routes>
           </div>
           {user && <OnlineUsers />}
