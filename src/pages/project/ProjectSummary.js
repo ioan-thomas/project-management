@@ -1,7 +1,7 @@
 import {Avatar} from '../../components/Avatar'
 import {useFirestore} from '../../hooks/useFirestore'
 import {useAuthContext} from '../../hooks/useAuthContext'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import './Project.css'
 
@@ -9,11 +9,11 @@ export default function ProjectSummary({project:{name, details, dueDate, assigne
 
     const {deleteDocument} = useFirestore('projects')
     const {user:{uid}} = useAuthContext()
-    const {push} = useHistory()
+    const navigate = useNavigate()
 
     const handleClick = (e) => {
         deleteDocument(projId)
-        push('/')
+        navigate('/')
     }
 
   return (
