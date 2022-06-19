@@ -4,10 +4,10 @@ import { timestamp } from '../../firebase/config';
 import {useCollection} from '../../hooks/useCollection'
 import {useAuthContext} from '../../hooks/useAuthContext'
 import { useFirestore } from '../../hooks/useFirestore';
+import { useNavigate } from 'react-router-dom';
 
 // styles
 import './Create.css'
-import { useHistory } from 'react-router-dom';
 
 const categories = [
   {value: 'development', label: 'Development'},
@@ -22,7 +22,7 @@ export default function Create() {
   const [users, setUsers] = useState([]);
   const { user } = useAuthContext()
   const { addDocument, response:{ error, isPending } } = useFirestore('projects')
-  const history = useHistory()
+  const navigate = useNavigate()
 
   // form field values
   const [name, setName] = useState('');
@@ -82,7 +82,7 @@ export default function Create() {
     }
 
     if(!error){
-      history.push('/')
+      navigate('/')
     }
   }
 
